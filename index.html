@@ -3,56 +3,45 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧠 ADAPTIVE INDEX · IKI1UC · MODULAR</title>
+  <title>🧠 ADAPTIVE INDEX · VITALITY · MODULES · SYNC_CHANNEL</title>
 
   <style>
-    /* ============================================================
-       STYLES – minimalistisch, aber vollständig
-       ============================================================ */
     * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: #0a0a12;
-      color: #d0d8e0;
-      font-family: 'Consolas', 'Courier New', monospace;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      padding: 12px;
+      background: #0a0a12; color: #d0d8e0; font-family: 'Consolas', 'Courier New', monospace;
+      min-height: 100vh; display: flex; justify-content: center; padding: 12px;
     }
     .container {
-      max-width: 1500px;
-      width: 100%;
-      background: #0e141c;
-      border-radius: 28px;
-      padding: 18px 22px 24px;
-      border: 1px solid #1a2a3a;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+      max-width: 1500px; width: 100%; background: #0e141c; border-radius: 28px;
+      padding: 18px 22px 24px; border: 1px solid #1a2a3a; box-shadow: 0 20px 60px rgba(0,0,0,0.8);
     }
     .header {
       display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
       border-bottom: 2px solid #2a3a4a; padding-bottom: 12px; margin-bottom: 18px;
     }
     .header h1 {
-      font-size: 26px; font-weight: 300; letter-spacing: 3px;
+      font-size: 24px; font-weight: 300; letter-spacing: 2px;
       background: linear-gradient(135deg, #6cf, #f0d080, #b388ff, #8cf0d0);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
     .header h1 small {
-      font-size: 13px; color: #5a7a8a; -webkit-text-fill-color: #5a7a8a;
+      font-size: 12px; color: #5a7a8a; -webkit-text-fill-color: #5a7a8a;
       letter-spacing: 1px; margin-left: 8px;
     }
-    .status-leds { display: flex; gap: 16px; font-size: 12px; color: #5a7a8a; flex-wrap: wrap; }
+    .status-leds { display: flex; gap: 14px; font-size: 11px; color: #5a7a8a; flex-wrap: wrap; }
     .status-leds span { display:flex; align-items:center; gap:5px; }
-    .led { display:inline-block; width:10px; height:10px; border-radius:50%; background:#2a4a5a; transition:.3s; }
+    .led { display:inline-block; width:9px; height:9px; border-radius:50%; background:#2a4a5a; transition:.3s; }
     .led.on { background:#8cf0d0; box-shadow:0 0 12px #8cf0d0; }
     .led.pulse { background:#f0d080; animation:pulse 1.2s infinite; }
     .led.sync { background:#b388ff; box-shadow:0 0 12px #b388ff; }
+    .led.low { background:#ff6b6b; box-shadow:0 0 12px #ff6b6b; }
+    .led.mid { background:#f0d080; box-shadow:0 0 12px #f0d080; }
+    .led.high { background:#8cf0d0; box-shadow:0 0 12px #8cf0d0; animation:pulse .8s infinite; }
     @keyframes pulse { 0%,100%{opacity:.4;transform:scale(.8)} 50%{opacity:1;transform:scale(1.2)} }
 
     .main-layout { display: grid; grid-template-columns: 240px 1fr; gap: 20px; }
     @media (max-width: 900px) { .main-layout { grid-template-columns: 1fr; } }
 
-    /* ─── Sidebar ──────────────────────────────────────────────── */
     .sidebar {
       background: #0a0a0f; border-radius: 16px; padding: 14px 12px;
       border: 1px solid #1a2a3a; max-height: 80vh; overflow-y: auto;
@@ -62,27 +51,51 @@
       border-bottom: 1px solid #1a2a3a; padding-bottom: 6px; margin-bottom: 10px;
     }
     .sidebar .module-item {
-      display: flex; align-items: center; gap: 8px;
-      padding: 6px 10px; border-radius: 8px; cursor: pointer;
-      transition: .2s; font-size: 12px; color: #8ab0c0;
-      border-left: 3px solid transparent;
+      display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 8px;
+      cursor: pointer; transition: .2s; font-size: 12px; color: #8ab0c0; border-left: 3px solid transparent;
     }
     .sidebar .module-item:hover { background: #1a2a3a; color: #d0e8f8; }
     .sidebar .module-item.active { background: #1a2a3a; border-left-color: #6cf; color: #fff; }
+    .sidebar .module-item.vitality-item.active { border-left-color: #b388ff; }
     .sidebar .module-item .icon { font-size: 16px; }
     .sidebar .module-item .badge {
-      margin-left: auto; font-size: 8px; background: #1a2a3a;
-      padding: 1px 8px; border-radius: 12px; color: #5a7a8a;
+      margin-left: auto; font-size: 8px; background: #1a2a3a; padding: 1px 8px; border-radius: 12px; color: #5a7a8a;
     }
     .sidebar .module-item .badge.ready { color: #8cf0d0; border:1px solid #8cf0d0; }
+    .sidebar .divider { border-top: 1px solid #1a2a3a; margin: 10px 0; }
 
-    /* ─── Views ────────────────────────────────────────────────── */
     .content-area { display: flex; flex-direction: column; gap: 16px; }
     .content-area .view { display: none; }
     .content-area .view.active { display: block; animation: fadeIn .3s ease; }
     @keyframes fadeIn { from { opacity:0.3; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
 
-    /* ─── CUB ──────────────────────────────────────────────────── */
+    /* VITALITY */
+    .vitality-panel { display:grid; grid-template-columns: 1fr 1fr; gap:16px; }
+    @media (max-width:800px) { .vitality-panel { grid-template-columns:1fr; } }
+    .vitality-card { background:#111; border:1px solid #2a3a4a; border-radius:12px; padding:16px 18px; }
+    .vitality-card h4 { color:#f0d080; font-size:12px; letter-spacing:1px; margin-bottom:10px; border-bottom:1px solid #1a2a3a; padding-bottom:5px; }
+    .slider-row { margin-bottom:14px; }
+    .slider-row .label { display:flex; justify-content:space-between; font-size:11px; color:#8ab0c0; margin-bottom:4px; }
+    .slider-row .label .val { color:#d0e0e8; font-weight:bold; }
+    .slider-row input[type=range] {
+      width:100%; height:4px; -webkit-appearance:none; appearance:none;
+      background:#1a2a3a; border-radius:4px; outline:none;
+    }
+    .slider-row input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance:none; width:14px; height:14px; border-radius:50%;
+      background:#b388ff; cursor:pointer; box-shadow:0 0 10px rgba(179,136,255,.4);
+    }
+    .vitality-big {
+      text-align:center; padding:20px 0;
+    }
+    .vitality-big .num { font-size:52px; font-weight:bold; color:#f0d080; text-shadow:0 0 20px rgba(240,208,128,.3); }
+    .vitality-big .tier { font-size:13px; letter-spacing:2px; margin-top:4px; }
+    .vitality-big .tier.low { color:#ff6b6b; }
+    .vitality-big .tier.mid { color:#f0d080; }
+    .vitality-big .tier.high { color:#8cf0d0; }
+    .vitality-formula { font-size:10px; color:#4a5a6a; text-align:center; margin-top:6px; }
+
+    /* CUB */
     .cube-grid {
       display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
       max-width: 480px; margin: 0 auto; aspect-ratio:1/1;
@@ -102,7 +115,7 @@
     .cube-cell.occupied { border-color:#6cf; background:#0a1a2a; }
     .cube-cell.axis { border-color:#f0d080; background:#1a1400; }
 
-    /* ─── STAGE ────────────────────────────────────────────────── */
+    /* STAGE */
     .stage-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap:12px; }
     .stage-card {
       background:#111; border:1px solid #2a3a4a; border-radius:12px;
@@ -114,7 +127,7 @@
     .stage-card .path { font-size:9px; color:#4a5a6a; }
     .stage-card .coord { font-size:10px; color:#b388ff; margin-top:4px; }
 
-    /* ─── 4TEL ─────────────────────────────────────────────────── */
+    /* 4TEL */
     .tel-panel { display: grid; grid-template-columns: 1fr 1fr; gap:16px; }
     @media (max-width:800px) { .tel-panel { grid-template-columns:1fr; } }
     .tel-card { background:#111; border:1px solid #2a3a4a; border-radius:12px; padding:14px 16px; }
@@ -123,11 +136,10 @@
     .tel-row .label { color:#5a7a8a; }
     .tel-row .value { color:#d0e0e8; font-weight:bold; }
 
-    /* ─── Sync-Bar ─────────────────────────────────────────────── */
+    /* SYNC */
     .sync-bar {
       display:flex; flex-wrap:wrap; gap:10px; align-items:center;
-      background:#0e141c; padding:8px 16px; border-radius:12px;
-      border:1px solid #1a2a3a; margin:12px 0 6px;
+      background:#0e141c; padding:8px 16px; border-radius:12px; border:1px solid #1a2a3a; margin:12px 0 6px;
     }
     .sync-bar .label { font-size:11px; color:#b388ff; letter-spacing:1px; display:flex; align-items:center; gap:6px; }
     .sync-bar input {
@@ -142,24 +154,25 @@
     .sync-bar button:hover { background:#2a3a4a; border-color:#6cf; color:#d0e8f8; }
     .sync-bar button.sync { border-color:rgba(179,136,255,0.2); color:#b388ff; }
     .sync-bar button.sync:hover { background:rgba(179,136,255,0.1); }
+    .channel-status { font-size:9px; color:#5a7a8a; }
+    .channel-status.ok { color:#8cf0d0; }
+    .channel-status.fallback { color:#f0d080; }
 
-    /* ─── Log ──────────────────────────────────────────────────── */
+    /* LOG */
     .log-box {
-      background:#111; padding:8px 14px; border-radius:10px;
-      border:1px solid #2a3a4a; font-size:10px; line-height:1.5;
-      max-height:120px; overflow-y:auto; color:#5a7a8a; margin-top:6px;
+      background:#111; padding:8px 14px; border-radius:10px; border:1px solid #2a3a4a;
+      font-size:10px; line-height:1.5; max-height:120px; overflow-y:auto; color:#5a7a8a; margin-top:6px;
     }
     .log-box .entry { border-bottom:1px solid #0e1620; padding:2px 0; }
     .log-box .time { color:#2a3a4a; }
     .log-box .floor { color:#6cf; }
     .log-box .msg { color:#8ab0c0; }
     .log-box .msg.warn { color:#f0d080; }
+    .log-box .msg.ok { color:#8cf0d0; }
 
-    /* ─── Footer ───────────────────────────────────────────────── */
     .footer {
-      display:flex; flex-wrap:wrap; gap:16px; justify-content:center;
-      margin-top:16px; padding:6px 16px; background:#0e141c; border-radius:12px;
-      border:1px solid #1a2a3a; font-size:10px; color:#3a4a5a;
+      display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-top:16px;
+      padding:6px 16px; background:#0e141c; border-radius:12px; border:1px solid #1a2a3a; font-size:10px; color:#3a4a5a;
     }
     .footer .gold { color:#f0d080; }
     .footer .stat { display:flex; align-items:center; gap:4px; }
@@ -174,30 +187,65 @@
 <div class="container">
 
   <div class="header">
-    <h1>🧠 ADAPTIVE INDEX <small>iki1uc · modular · erweiterbar</small></h1>
+    <h1>🧠 ADAPTIVE INDEX <small>VITALITY · MODULES · SYNC_CHANNEL</small></h1>
     <div class="status-leds">
       <span><span class="led on" id="ledSystem"></span> SYSTEM</span>
       <span><span class="led sync" id="ledSync"></span> SYNC</span>
-      <span><span class="led pulse" id="ledReich"></span> REICH</span>
+      <span><span class="led mid" id="ledVitality"></span> VITALITY</span>
+      <span class="channel-status" id="channelStatus">Kanal wird geprüft…</span>
     </div>
   </div>
 
   <div class="main-layout">
 
-    <!-- SIDEBAR -->
     <div class="sidebar" id="sidebar">
+      <h3>⚡ ZUSTAND</h3>
+      <div class="module-item vitality-item" id="navVitality" data-id="vitality">
+        <span class="icon">⚡</span><span>VITALITY</span>
+        <span class="badge ready" id="vitalityBadge">50</span>
+      </div>
+      <div class="divider"></div>
       <h3>📂 MODULE</h3>
       <div id="moduleList"></div>
     </div>
 
-    <!-- CONTENT -->
     <div class="content-area">
 
+      <div class="view" id="viewVitality">
+        <h3 style="color:#b388ff;font-size:14px;letter-spacing:1px;margin-bottom:8px;">⚡ VITALITY · Mana + Aura + Zen</h3>
+        <div class="vitality-panel">
+          <div class="vitality-card">
+            <h4>🎚️ KOMPONENTEN</h4>
+            <div class="slider-row">
+              <div class="label"><span>🪄 Mana</span><span class="val" id="valMana">50</span></div>
+              <input type="range" id="sliderMana" min="0" max="100" value="50">
+            </div>
+            <div class="slider-row">
+              <div class="label"><span>✨ Aura</span><span class="val" id="valAura">50</span></div>
+              <input type="range" id="sliderAura" min="0" max="100" value="50">
+            </div>
+            <div class="slider-row">
+              <div class="label"><span>🧘 Zen</span><span class="val" id="valZen">50</span></div>
+              <input type="range" id="sliderZen" min="0" max="100" value="50">
+            </div>
+          </div>
+          <div class="vitality-card">
+            <h4>📊 AXIOM</h4>
+            <div class="vitality-big">
+              <div class="num" id="vitalityNum">50</div>
+              <div class="tier mid" id="vitalityTierLabel">MITTEL</div>
+            </div>
+            <div class="vitality-formula">VITALITY = (Mana + Aura + Zen) / 3</div>
+            <div class="vitality-formula">steuert: Cube-Ebene · LED-Farbe · 4TEL-Energie · Sync-Priorität</div>
+          </div>
+        </div>
+      </div>
+
       <div class="view active" id="viewCub">
-        <h3 style="color:#6cf;font-size:14px;letter-spacing:1px;margin-bottom:8px;">🧊 CUB · HDF‑Cube</h3>
+        <h3 style="color:#6cf;font-size:14px;letter-spacing:1px;margin-bottom:8px;">🧊 CUB · HDF‑Cube <span style="color:#5a7a8a;font-weight:normal;">(Ebene = Vitality‑Stufe)</span></h3>
         <div class="cube-grid" id="cubeGrid"></div>
         <div style="text-align:center;font-size:10px;color:#5a7a8a;margin-top:6px;">
-          <span id="cubeOccupied">0</span>/27 belegt · Achsen: b(X) · h(Y) · t(Z)
+          <span id="cubeOccupied">0</span>/27 belegt · aktuelle Ebene: <span id="cubeLayer">1</span>/3
         </div>
       </div>
 
@@ -207,7 +255,7 @@
       </div>
 
       <div class="view" id="viewTel">
-        <h3 style="color:#b388ff;font-size:14px;letter-spacing:1px;margin-bottom:8px;">⚡ 4TEL · Physik</h3>
+        <h3 style="color:#b388ff;font-size:14px;letter-spacing:1px;margin-bottom:8px;">⚡ 4TEL · Physik <span style="color:#5a7a8a;font-weight:normal;">(skaliert mit Vitality)</span></h3>
         <div class="tel-panel">
           <div class="tel-card">
             <h4>🔢 3TEL‑Basis</h4>
@@ -217,11 +265,11 @@
             <div class="tel-row"><span class="label">FullSync → 4TEL</span><span class="value" id="telFull">◎</span></div>
           </div>
           <div class="tel-card">
-            <h4>🧮 GEO‑Physik</h4>
-            <div class="tel-row"><span class="label">Energie (α×9.81)</span><span class="value" id="telEnergy">0</span></div>
-            <div class="tel-row"><span class="label">Impuls (β×γ)</span><span class="value" id="telImpuls">0</span></div>
-            <div class="tel-row"><span class="label">Feld (γ×42)</span><span class="value" id="telFeld">0</span></div>
-            <div class="tel-row"><span class="label">Zentrumskraft (δ×108)</span><span class="value" id="telZentrum">0</span></div>
+            <h4>🧮 GEO‑Physik (× Vitality-Faktor)</h4>
+            <div class="tel-row"><span class="label">Energie (α×9.81×v)</span><span class="value" id="telEnergy">0</span></div>
+            <div class="tel-row"><span class="label">Impuls (β×γ×v)</span><span class="value" id="telImpuls">0</span></div>
+            <div class="tel-row"><span class="label">Feld (γ×42×v)</span><span class="value" id="telFeld">0</span></div>
+            <div class="tel-row"><span class="label">Zentrumskraft (δ×108×v)</span><span class="value" id="telZentrum">0</span></div>
           </div>
         </div>
       </div>
@@ -231,186 +279,194 @@
         <div id="genericContent" style="background:#111;padding:14px;border-radius:12px;border:1px solid #2a3a4a;font-size:12px;color:#8ab0c0;line-height:1.7;"></div>
       </div>
 
-      <!-- SYNC-BAR -->
       <div class="sync-bar">
-        <span class="label"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#b388ff;"></span> arg.sync</span>
+        <span class="label"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#b388ff;"></span> SYNC_CHANNEL</span>
         <input type="text" id="syncInput" placeholder="Nachricht an alle Module…" value="sync:adaptive">
         <button class="sync" id="btnSync">🔄 SYNC</button>
         <button id="btnBroadcast">📡 BROADCAST</button>
         <button id="btnReset">⟲ RESET</button>
       </div>
 
-      <!-- LOG -->
       <div class="log-box" id="logBox">
-        <div class="entry"><span class="time">[INIT]</span> <span class="floor">🧠 ADAPTIVE</span> <span class="msg">System geladen · modular</span></div>
+        <div class="entry"><span class="time">[INIT]</span> <span class="floor">🧠 ADAPTIVE</span> <span class="msg">System geladen · VITALITY-Kern aktiv</span></div>
       </div>
 
     </div>
   </div>
 
   <div class="footer">
-    <span class="stat"><span class="gold">★</span> ADAPTIVE · modular · erweiterbar</span>
-    <span class="stat">🔷 <span id="fModules">0</span> erkannt</span>
-    <span class="stat">⚡ <span id="fSyncCount">0</span> SYNCs</span>
-    <span class="stat">⌨️  1=CUB  2=STAGE  3=4TEL  4=Generic</span>
+    <span class="stat"><span class="gold">★</span> ADAPTIVE · VITALITY-Kern</span>
+    <span class="stat">🔷 <span id="fModules">0</span> Module</span>
+    <span class="stat">⚡ Vitality: <span id="fVitality">50</span></span>
+    <span class="stat">📡 <span id="fSyncCount">0</span> SYNCs</span>
+    <span class="stat">⌨️ 0=Vitality 1=CUB 2=STAGE 3=4TEL s=Sync b=Broadcast r=Reset</span>
   </div>
 
 </div>
 
 <script>
-  "use strict";
+"use strict";
+/* ================================================================
+   ADAPTIVE INDEX · VITALITY-Kern
+   ================================================================
+   Drei Bausteine, wie angefordert:
+   1) VITALITY   – ein Axiom aus Mana+Aura+Zen, das UI/Physik/Sync
+                   beeinflusst.
+   2) MODULES    – die Registry, aus der alles (Sidebar, Cube, Stage)
+                   dynamisch erzeugt wird.
+   3) SYNC_CHANNEL – EIN Kommunikationskanal für alles. Nutzt
+                   BroadcastChannel (funktioniert zwischen Tabs/
+                   Fenstern OHNE iframe); wo das fehlt, automatischer
+                   Fallback auf localStorage + 'storage'-Event.
+                   Das behebt den Bug der Vorversion, wo SYNC nur
+                   nach <iframe>-Elementen gesucht hat, die es nie
+                   gab und daher nie etwas erreichte.
+   ================================================================ */
 
-  // ================================================================
-  //  KONFIGURATION – DREH DARAN, UND DAS SYSTEM ÄNDERT SICH
-  //  ================================================================
+  // ─── KONFIGURATION ─────────────────────────────────────────────
+  const MODULES = [
+    { id: 'queast',  label: 'QUEAST',  icon: '🌀', path: 'QUEAST/index.html' },
+    { id: '4tel',    label: '4TEL',    icon: '⚡', path: '4TEL/index.html' },
+    { id: 'stage',   label: 'STAGE',   icon: '🎛️', path: 'STAGE/index.html' },
+    { id: 'ecklos',  label: 'ECKLOS',  icon: '🔷', path: 'ECKLOS/index.html' },
+    { id: 'cub',     label: 'CUB',     icon: '🧊', path: 'CUB/index.html' },
+    { id: 'olsen',   label: 'OLSEN',   icon: '🌿', path: 'OLSEN/index.html' },
+    { id: 'bridge',  label: 'BRIDGE',  icon: '🌉', path: 'BRIDGE/index.html' }
+  ];
+  const VIEW_MAP = { cub: 'viewCub', stage: 'viewStage', '4tel': 'viewTel' };
+  // Achsen-Zellen liegen auf (x,y)-Spalten, die KEIN Modul je belegt
+  // (die 7 Module oben füllen nur (0,0) (1,0) (2,0) (0,1) (1,1) (2,1) (0,2)),
+  // damit sie bei keiner Vitality-Ebene mit einem Modul kollidieren.
+  const AXES = [
+    { id: 'b', x: 1, y: 2, z: 0 },
+    { id: 'h', x: 1, y: 2, z: 1 },
+    { id: 't', x: 2, y: 2, z: 0 }
+  ];
+  const STORAGE_VITALITY = 'adaptive_vitality_state';
+  const STORAGE_SYNC_MSG = 'adaptive_sync_message';
+  const MAX_LOG = 40;
 
-  const CONFIG = {
-    // ─── Modul-Liste: ergänze einfach Einträge ───────────────────
-    modules: [
-      { id: 'queast',  label: 'QUEAST',  icon: '🌀', path: 'QUEAST/index.html' },
-      { id: '4tel',    label: '4TEL',    icon: '⚡', path: '4TEL/index.html' },
-      { id: 'stage',   label: 'STAGE',   icon: '🎛️', path: 'STAGE/index.html' },
-      { id: 'ecklos',  label: 'ECKLOS',  icon: '🔷', path: 'ECKLOS/index.html' },
-      { id: 'cub',     label: 'CUB',     icon: '🧊', path: 'CUB/index.html' },
-      { id: 'olsen',   label: 'OLSEN',   icon: '🌿', path: 'OLSEN/index.html' },
-      { id: 'bridge',  label: 'BRIDGE',  icon: '🌉', path: 'BRIDGE/index.html' }
-    ],
+  // ─── 1. VITALITY ────────────────────────────────────────────────
+  const Vitality = {
+    mana: 50, aura: 50, zen: 50,
 
-    // ─── Welche Module welche View bekommen ──────────────────────
-    viewMap: {
-      cub: 'viewCub',
-      stage: 'viewStage',
-      '4tel': 'viewTel'
-      // alle anderen landen automatisch in 'viewGeneric'
+    get value() { return Math.round((this.mana + this.aura + this.zen) / 3); },
+    get factor() { return this.value / 100; }, // 0..1, für Physik-Skalierung
+    get tier() { return this.value < 34 ? 'low' : this.value < 67 ? 'mid' : 'high'; },
+    get tierLabel() { return { low: 'NIEDRIG', mid: 'MITTEL', high: 'HOCH' }[this.tier]; },
+    get zLayer() { return this.tier === 'low' ? 0 : this.tier === 'mid' ? 1 : 2; },
+
+    load() {
+      try {
+        const s = JSON.parse(localStorage.getItem(STORAGE_VITALITY) || '{}');
+        this.mana = s.mana ?? 50; this.aura = s.aura ?? 50; this.zen = s.zen ?? 50;
+      } catch (_) { /* Defaults bleiben */ }
     },
-
-    // ─── Achsen für den Cube ─────────────────────────────────────
-    axes: [
-      { id: 'b', label: 'b (Breite)', x: 1, y: 2, z: 0 },
-      { id: 'h', label: 'h (Höhe)',   x: 2, y: 2, z: 0 },
-      { id: 't', label: 't (Tiefe)',  x: 0, y: 0, z: 1 }
-    ],
-
-    // ─── 4TEL-Physik-Parameter ──────────────────────────────────
-    tel: {
-      alpha: 3,
-      beta: 9,
-      gamma: 81,
-      delta: 1
+    persist() {
+      localStorage.setItem(STORAGE_VITALITY, JSON.stringify({ mana: this.mana, aura: this.aura, zen: this.zen }));
     },
-
-    // ─── Logging ─────────────────────────────────────────────────
-    maxLogEntries: 40,
-    syncLabel: 'arg.sync'
+    set(part, val) {
+      this[part] = Math.max(0, Math.min(100, val));
+      this.persist();
+    }
   };
 
-  // ================================================================
-  //  KERN-ENGINE – alles, was das System antreibt
-  //  ================================================================
-
-  // ─── 1. Koordinatensystem ──────────────────────────────────────
+  // ─── 2. COORD-SYSTEM (koppelt an Vitality.zLayer) ─────────────
   const CoordSystem = {
     stages: {},
-    axes: {},
-
-    register(id, x, y, z) {
-      this.stages[id] = { x, y, z };
-    },
-
-    get(id) {
-      return this.stages[id] || null;
-    },
-
-    // Alle Module automatisch in den 3×3×3-Cube legen
-    autoAssign(modules) {
-      modules.forEach((m, i) => {
-        this.register(m.id, i % 3, Math.floor(i / 3) % 3, Math.floor(i / 9));
+    register(id, x, y, z) { this.stages[id] = { x, y, z }; },
+    get(id) { return this.stages[id] || null; },
+    autoAssign() {
+      this.stages = {};
+      MODULES.forEach((m, i) => {
+        this.register(m.id, i % 3, Math.floor(i / 3) % 3, Vitality.zLayer);
       });
-      // Achsen registrieren (überschreiben keine Module)
-      CONFIG.axes.forEach(a => {
-        this.register(a.id, a.x, a.y, a.z);
-      });
+      AXES.forEach(a => this.register(a.id, a.x, a.y, a.z));
     }
   };
 
-  // ─── 2. View-Manager ────────────────────────────────────────────
-  const ViewManager = {
-    currentModuleId: null,
+  // ─── 3. SYNC_CHANNEL ────────────────────────────────────────────
+  const SyncChannel = {
+    channel: null,
+    supported: false,
+    counter: 0,
 
-    // Alle Views per ID
-    views: {
-      cub: document.getElementById('viewCub'),
-      stage: document.getElementById('viewStage'),
-      tel: document.getElementById('viewTel'),
-      generic: document.getElementById('viewGeneric')
-    },
-
-    // Zuordnung Modul-ID → View-ID
-    getViewId(moduleId) {
-      return CONFIG.viewMap[moduleId] || 'viewGeneric';
-    },
-
-    switchTo(moduleId) {
-      this.currentModuleId = moduleId;
-      // Alle Views ausblenden
-      Object.values(this.views).forEach(v => v.classList.remove('active'));
-      const viewId = this.getViewId(moduleId);
-      const target = document.getElementById(viewId);
-      if (target) target.classList.add('active');
-
-      // View-spezifische Render-Funktionen aufrufen
-      if (moduleId === 'cub') Renderer.renderCube();
-      if (moduleId === 'stage') Renderer.renderStage();
-      if (moduleId === '4tel') Renderer.renderTelPhysics();
-      // Für alle anderen: generische Detail-Ansicht
-      if (!['cub', 'stage', '4tel'].includes(moduleId)) {
-        Renderer.renderGeneric(moduleId);
+    init(onMessage) {
+      if ('BroadcastChannel' in window) {
+        this.channel = new BroadcastChannel('adaptive.sync');
+        this.channel.onmessage = (e) => onMessage(e.data);
+        this.supported = true;
       }
+      // Fallback/Ergänzung: localStorage + storage-Event erreicht auch
+      // andere Tabs/Fenster, selbst ohne BroadcastChannel-Unterstützung.
+      window.addEventListener('storage', (e) => {
+        if (e.key === STORAGE_SYNC_MSG && e.newValue) {
+          try { onMessage(JSON.parse(e.newValue)); } catch (_) {}
+        }
+      });
+    },
+    send(payload) {
+      const msg = { ...payload, ts: Date.now() };
+      if (this.channel) { try { this.channel.postMessage(msg); } catch (_) {} }
+      // Immer spiegeln — auch für Tabs ohne BroadcastChannel-Support.
+      localStorage.setItem(STORAGE_SYNC_MSG, JSON.stringify(msg));
     }
   };
 
-  // ─── 3. Renderer ────────────────────────────────────────────────
-  const Renderer = {
+  // ─── LOG ────────────────────────────────────────────────────────
+  function log(msg, floor = '🧠 ADAPTIVE', type = '') {
+    const box = document.getElementById('logBox');
+    const time = new Date().toLocaleTimeString('de-DE');
+    const entry = document.createElement('div');
+    entry.className = 'entry';
+    entry.innerHTML = `<span class="time">[${time}]</span> <span class="floor">${floor}</span> <span class="msg ${type}">${msg}</span>`;
+    box.appendChild(entry);
+    box.scrollTop = box.scrollHeight;
+    while (box.children.length > MAX_LOG) box.removeChild(box.firstChild);
+  }
 
-    // ─── Sidebar ─────────────────────────────────────────────────
-    renderSidebar(modules, coordSystem) {
+  // ─── RENDERER ───────────────────────────────────────────────────
+  const Renderer = {
+    renderSidebar() {
       const list = document.getElementById('moduleList');
       list.innerHTML = '';
-      modules.forEach(m => {
+      MODULES.forEach(m => {
         const div = document.createElement('div');
         div.className = 'module-item';
         div.dataset.id = m.id;
-        const c = coordSystem.get(m.id) || { x: '?', y: '?', z: '?' };
-        div.innerHTML = `
-          <span class="icon">${m.icon}</span>
-          <span>${m.label}</span>
-          <span class="badge ready">(${c.x},${c.y},${c.z})</span>
-        `;
-        div.addEventListener('click', () => {
-          document.querySelectorAll('.module-item').forEach(el => el.classList.remove('active'));
-          div.classList.add('active');
-          ViewManager.switchTo(m.id);
-          Log.write(`📂 Modul gewechselt: ${m.label}`, '🧠 ADAPTIVE');
-        });
+        const c = CoordSystem.get(m.id) || { x: '?', y: '?', z: '?' };
+        div.innerHTML = `<span class="icon">${m.icon}</span><span>${m.label}</span><span class="badge ready">(${c.x},${c.y},${c.z})</span>`;
+        div.addEventListener('click', () => activate(m.id));
         list.appendChild(div);
       });
-      document.getElementById('fModules').textContent = modules.length;
-      // Erstes Modul automatisch aktivieren
-      const first = list.querySelector('.module-item');
-      if (first) first.click();
+      document.getElementById('fModules').textContent = MODULES.length;
     },
 
-    // ─── Cube ────────────────────────────────────────────────────
+    renderVitality() {
+      document.getElementById('valMana').textContent = Vitality.mana;
+      document.getElementById('valAura').textContent = Vitality.aura;
+      document.getElementById('valZen').textContent = Vitality.zen;
+      document.getElementById('sliderMana').value = Vitality.mana;
+      document.getElementById('sliderAura').value = Vitality.aura;
+      document.getElementById('sliderZen').value = Vitality.zen;
+      document.getElementById('vitalityNum').textContent = Vitality.value;
+      const tierLabelEl = document.getElementById('vitalityTierLabel');
+      tierLabelEl.textContent = Vitality.tierLabel;
+      tierLabelEl.className = 'tier ' + Vitality.tier;
+      document.getElementById('vitalityBadge').textContent = Vitality.value;
+      document.getElementById('fVitality').textContent = Vitality.value;
+
+      const led = document.getElementById('ledVitality');
+      led.className = 'led ' + Vitality.tier;
+    },
+
     renderCube() {
       const grid = document.getElementById('cubeGrid');
       grid.innerHTML = '';
       const cells = [];
-      for (let z = 0; z < 3; z++)
-        for (let y = 0; y < 3; y++)
-          for (let x = 0; x < 3; x++) cells.push({ x, y, z });
+      for (let z = 0; z < 3; z++) for (let y = 0; y < 3; y++) for (let x = 0; x < 3; x++) cells.push({ x, y, z });
 
-      const stages = CoordSystem.stages;
-      const entries = Object.entries(stages);
+      const entries = Object.entries(CoordSystem.stages);
       let occupied = 0;
 
       cells.forEach(cell => {
@@ -423,22 +479,15 @@
 
         const content = document.createElement('div');
         content.className = 'content';
+        const isAxisId = (id) => AXES.some(a => a.id === id);
 
-        // Echte Module (keine Achsen)
-        const matching = entries.filter(([id, coord]) =>
-          coord.x === cell.x && coord.y === cell.y && coord.z === cell.z &&
-          !CONFIG.axes.some(a => a.id === id)
-        );
-        const axisMatch = entries.find(([id, coord]) =>
-          CONFIG.axes.some(a => a.id === id) &&
-          coord.x === cell.x && coord.y === cell.y && coord.z === cell.z
-        );
+        const matching = entries.filter(([id, c]) => c.x===cell.x && c.y===cell.y && c.z===cell.z && !isAxisId(id));
+        const axisMatch = entries.find(([id, c]) => isAxisId(id) && c.x===cell.x && c.y===cell.y && c.z===cell.z);
 
         if (matching.length > 0) {
           const id = matching[0][0];
-          const mod = CONFIG.modules.find(m => m.id === id);
-          const icon = mod ? mod.icon : '📁';
-          content.innerHTML = `<span class="icon">${icon}</span><span class="name">${id}</span><span class="status">✅</span>`;
+          const mod = MODULES.find(m => m.id === id);
+          content.innerHTML = `<span class="icon">${mod ? mod.icon : '📁'}</span><span class="name">${id}</span><span class="status">✅</span>`;
           div.classList.add('occupied');
           occupied++;
         } else if (axisMatch) {
@@ -447,48 +496,41 @@
         } else {
           content.innerHTML = `<span class="icon">·</span><span class="name" style="color:#2a3a4a;">leer</span>`;
         }
-
         div.appendChild(content);
         grid.appendChild(div);
       });
       document.getElementById('cubeOccupied').textContent = occupied;
+      document.getElementById('cubeLayer').textContent = Vitality.zLayer + 1;
     },
 
-    // ─── Stage ───────────────────────────────────────────────────
     renderStage() {
       const grid = document.getElementById('stageGrid');
       grid.innerHTML = '';
-      CONFIG.modules.forEach(m => {
+      MODULES.forEach(m => {
         const c = CoordSystem.get(m.id) || { x: '?', y: '?', z: '?' };
         const card = document.createElement('a');
         card.className = 'stage-card';
         card.href = m.path;
-        card.innerHTML = `
-          <div class="icon">${m.icon}</div>
-          <div class="name">${m.label}</div>
-          <div class="path">${m.path}</div>
-          <div class="coord">(${c.x}, ${c.y}, ${c.z})</div>
-        `;
+        card.innerHTML = `<div class="icon">${m.icon}</div><div class="name">${m.label}</div><div class="path">${m.path}</div><div class="coord">(${c.x}, ${c.y}, ${c.z})</div>`;
         grid.appendChild(card);
       });
     },
 
-    // ─── 4TEL ────────────────────────────────────────────────────
-    renderTelPhysics() {
-      const t = CONFIG.tel;
-      document.getElementById('tel1').textContent = t.alpha;
-      document.getElementById('tel2').textContent = t.beta;
-      document.getElementById('tel3').textContent = t.gamma;
+    renderTel() {
+      const alpha = 3, beta = 9, gamma = 81, delta = 1;
+      const v = Vitality.factor; // 0..1 — skaliert die Physik mit der Vitality
+      document.getElementById('tel1').textContent = alpha;
+      document.getElementById('tel2').textContent = beta;
+      document.getElementById('tel3').textContent = gamma;
       document.getElementById('telFull').textContent = '◎';
-      document.getElementById('telEnergy').textContent = (t.alpha * 9.81).toFixed(2);
-      document.getElementById('telImpuls').textContent = t.beta * t.gamma;
-      document.getElementById('telFeld').textContent = t.gamma * 42;
-      document.getElementById('telZentrum').textContent = t.delta * 108;
+      document.getElementById('telEnergy').textContent = (alpha * 9.81 * v).toFixed(2);
+      document.getElementById('telImpuls').textContent = Math.round(beta * gamma * v);
+      document.getElementById('telFeld').textContent = Math.round(gamma * 42 * v);
+      document.getElementById('telZentrum').textContent = Math.round(delta * 108 * v);
     },
 
-    // ─── Generic ─────────────────────────────────────────────────
     renderGeneric(moduleId) {
-      const mod = CONFIG.modules.find(m => m.id === moduleId);
+      const mod = MODULES.find(m => m.id === moduleId);
       const box = document.getElementById('genericContent');
       if (!mod) { box.innerHTML = '⚠️ Modul nicht gefunden.'; return; }
       const c = CoordSystem.get(mod.id) || {};
@@ -499,113 +541,164 @@
         </div>
         <div>📂 Pfad: ${mod.path}</div>
         <div>📐 Koordinaten: (${c.x ?? '?'}, ${c.y ?? '?'}, ${c.z ?? '?'})</div>
-        <div style="margin-top:8px;color:#5a7a8a;">➤ Erkannt · über Sync ansprechbar</div>
+        <div style="margin-top:8px;color:#5a7a8a;">➤ Erkannt · über SYNC_CHANNEL ansprechbar (Vitality: ${Vitality.value})</div>
       `;
-    }
-  };
-
-  // ─── 4. Log ──────────────────────────────────────────────────────
-  const Log = {
-    write(msg, floor = '🧠 ADAPTIVE', type = '') {
-      const box = document.getElementById('logBox');
-      const time = new Date().toLocaleTimeString('de-DE');
-      const entry = document.createElement('div');
-      entry.className = 'entry';
-      entry.innerHTML = `<span class="time">[${time}]</span> <span class="floor">${floor}</span> <span class="msg ${type}">${msg}</span>`;
-      box.appendChild(entry);
-      box.scrollTop = box.scrollHeight;
-      while (box.children.length > CONFIG.maxLogEntries) box.removeChild(box.firstChild);
-    }
-  };
-
-  // ─── 5. Sync ─────────────────────────────────────────────────────
-  const Sync = {
-    counter: 0,
-
-    send(message) {
-      const msg = message || document.getElementById('syncInput').value.trim() || 'sync:adaptive';
-      this.counter++;
-      document.getElementById('fSyncCount').textContent = this.counter;
-      const led = document.getElementById('ledSync');
-      led.className = 'led sync';
-      setTimeout(() => { led.className = 'led'; }, 400);
-
-      const iframes = document.querySelectorAll('iframe');
-      if (iframes.length === 0) {
-        Log.write(`⬆ SYNC (kein iframe): ${msg}`, '🛗 ROOT', 'warn');
-      } else {
-        iframes.forEach(f => {
-          try { f.contentWindow.postMessage({ type: CONFIG.syncLabel, payload: msg, from: 'adaptive' }, '*'); } catch (_) {}
-        });
-        Log.write(`⬆ SYNC an ${iframes.length} iframe(s): ${msg}`, '🛗 ROOT');
-      }
     },
 
-    broadcast() {
-      this.send(document.getElementById('syncInput').value.trim() || 'broadcast:adaptive');
-    },
-
-    reset() {
-      this.counter = 0;
-      document.getElementById('fSyncCount').textContent = '0';
-      Log.write('⟲ RESET – System zurückgesetzt', '🧠 ADAPTIVE');
-      Renderer.renderCube();
-      Renderer.renderStage();
-      Renderer.renderTelPhysics();
+    renderAll() {
+      this.renderSidebar();
+      this.renderVitality();
+      this.renderCube();
+      this.renderStage();
+      this.renderTel();
     }
   };
 
-  // ─── 6. INIT ─────────────────────────────────────────────────────
+  // ─── VIEW-WECHSEL ───────────────────────────────────────────────
+  let currentId = 'cub';
+  function activate(moduleId) {
+    currentId = moduleId;
+    document.querySelectorAll('.module-item').forEach(el => el.classList.toggle('active', el.dataset.id === moduleId));
+
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const viewId = moduleId === 'vitality' ? 'viewVitality' : (VIEW_MAP[moduleId] || 'viewGeneric');
+    document.getElementById(viewId)?.classList.add('active');
+
+    if (moduleId === 'vitality') Renderer.renderVitality();
+    else if (moduleId === 'cub') Renderer.renderCube();
+    else if (moduleId === 'stage') Renderer.renderStage();
+    else if (moduleId === '4tel') Renderer.renderTel();
+    else Renderer.renderGeneric(moduleId);
+
+    log(`📂 Ansicht gewechselt: ${moduleId}`);
+  }
+
+  // ─── SYNC-HANDLING ──────────────────────────────────────────────
+  function handleIncoming(data) {
+    if (!data) return;
+    if (data.type === 'arg.sync') {
+      document.getElementById('syncInput').value = data.payload || '';
+      SyncChannel.counter++;
+      document.getElementById('fSyncCount').textContent = SyncChannel.counter;
+      log(`📨 Empfangen von ${data.from || 'unbekannt'}: ${data.payload}`, '🧠 ADAPTIVE');
+    }
+    if (data.type === 'vitality.update') {
+      Vitality.mana = data.mana; Vitality.aura = data.aura; Vitality.zen = data.zen;
+      CoordSystem.autoAssign();
+      Renderer.renderAll();
+      log(`⚡ Vitality von anderem Tab übernommen: ${Vitality.value}`, '🧠 ADAPTIVE');
+    }
+    if (data.type === 'etage.ready') {
+      log(`✅ Etage ${data.from} ist bereit`, '🧠 ADAPTIVE');
+    }
+  }
+
+  function doSync(message) {
+    const msg = message || document.getElementById('syncInput').value.trim() || 'sync:adaptive';
+    SyncChannel.counter++;
+    document.getElementById('fSyncCount').textContent = SyncChannel.counter;
+    const led = document.getElementById('ledSync');
+    led.className = 'led sync';
+    setTimeout(() => { led.className = 'led'; }, 400);
+
+    SyncChannel.send({ type: 'arg.sync', payload: msg, from: 'adaptive', vitality: Vitality.value });
+    log(`📡 SYNC gesendet (Kanal: ${SyncChannel.supported ? 'BroadcastChannel' : 'localStorage-Fallback'}): ${msg}`);
+  }
+  function broadcastSync() { doSync(document.getElementById('syncInput').value.trim() || 'broadcast:adaptive'); }
+
+  function resetAll() {
+    SyncChannel.counter = 0;
+    document.getElementById('fSyncCount').textContent = '0';
+    Vitality.mana = 50; Vitality.aura = 50; Vitality.zen = 50;
+    Vitality.persist();
+    SyncChannel.send({ type: 'vitality.update', mana: 50, aura: 50, zen: 50, from: 'adaptive' });
+    CoordSystem.autoAssign();
+    Renderer.renderAll();
+    log('⟲ RESET – Vitality und Zähler zurückgesetzt', '🧠 ADAPTIVE', 'warn');
+  }
+
+  // ─── SLIDER-EVENTS (Vitality live verändern) ────────────────────
+  function bindSliders() {
+    const map = [
+      ['sliderMana', 'mana', 'valMana'],
+      ['sliderAura', 'aura', 'valAura'],
+      ['sliderZen', 'zen', 'valZen']
+    ];
+    map.forEach(([sliderId, part, displayId]) => {
+      document.getElementById(sliderId).addEventListener('input', (e) => {
+        const val = parseInt(e.target.value, 10);
+        Vitality.set(part, val);
+        document.getElementById(displayId).textContent = val;
+        const prevLayer = Vitality.zLayer;
+        CoordSystem.autoAssign();
+        Renderer.renderVitality();
+        if (currentId === 'cub') Renderer.renderCube();
+        Renderer.renderTel(); // Physik reagiert immer live, unabhängig von der aktiven Ansicht
+        SyncChannel.send({ type: 'vitality.update', mana: Vitality.mana, aura: Vitality.aura, zen: Vitality.zen, from: 'adaptive' });
+      });
+    });
+  }
+
+  // ─── RUN-LOOP ───────────────────────────────────────────────────
+  // Liest Vitality periodisch neu (falls ein anderer Tab sie geändert
+  // hat, ohne dass eine SYNC-Nachricht ankam) und hält Cube/LEDs aktuell.
+  let lastKnownLayer = null;
+  function runLoop() {
+    const beforeTier = Vitality.tier;
+    Vitality.load();
+    CoordSystem.autoAssign();
+    Renderer.renderVitality();
+    if (Vitality.zLayer !== lastKnownLayer) {
+      lastKnownLayer = Vitality.zLayer;
+      if (currentId === 'cub') Renderer.renderCube();
+      if (beforeTier !== Vitality.tier) log(`⚡ Vitality-Stufe gewechselt: ${Vitality.tierLabel}`, '🧠 ADAPTIVE', 'ok');
+    }
+    Renderer.renderTel();
+  }
+
+  // ─── EVENTS ─────────────────────────────────────────────────────
+  document.getElementById('navVitality').addEventListener('click', () => activate('vitality'));
+  document.getElementById('btnSync').addEventListener('click', () => doSync());
+  document.getElementById('btnBroadcast').addEventListener('click', broadcastSync);
+  document.getElementById('btnReset').addEventListener('click', resetAll);
+  document.getElementById('syncInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') doSync(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '0') activate('vitality');
+    if (e.key === '1') activate('cub');
+    if (e.key === '2') activate('stage');
+    if (e.key === '3') activate('4tel');
+    if (e.key === 's' || e.key === 'S') { e.preventDefault(); doSync(); }
+    if (e.key === 'b' || e.key === 'B') { e.preventDefault(); broadcastSync(); }
+    if (e.key === 'r' || e.key === 'R') { e.preventDefault(); resetAll(); }
+  });
+
+  // ─── INIT ───────────────────────────────────────────────────────
   function init() {
-    // Koordinaten initialisieren
-    CoordSystem.autoAssign(CONFIG.modules);
+    Vitality.load();
+    CoordSystem.autoAssign();
+    lastKnownLayer = Vitality.zLayer;
 
-    // Sidebar rendern
-    Renderer.renderSidebar(CONFIG.modules, CoordSystem);
+    Renderer.renderAll();
+    bindSliders();
 
-    // Stage & Tel initial rendern (für den Fall, dass sie als erstes aktiv werden)
-    Renderer.renderStage();
-    Renderer.renderTelPhysics();
+    SyncChannel.init(handleIncoming);
+    const statusEl = document.getElementById('channelStatus');
+    if (SyncChannel.supported) {
+      statusEl.textContent = '✅ BroadcastChannel aktiv';
+      statusEl.className = 'channel-status ok';
+    } else {
+      statusEl.textContent = '⚠️ Fallback: localStorage';
+      statusEl.className = 'channel-status fallback';
+    }
 
-    // Sync-Buttons
-    document.getElementById('btnSync').addEventListener('click', () => Sync.send());
-    document.getElementById('btnBroadcast').addEventListener('click', () => Sync.broadcast());
-    document.getElementById('btnReset').addEventListener('click', () => Sync.reset());
-    document.getElementById('syncInput').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') Sync.send();
-    });
+    activate('cub');
+    setInterval(runLoop, 1500);
 
-    // Tastatur
-    document.addEventListener('keydown', (e) => {
-      const clickId = (id) => document.querySelector(`.module-item[data-id="${id}"]`)?.click();
-      if (e.key === '1') clickId('cub');
-      if (e.key === '2') clickId('stage');
-      if (e.key === '3') clickId('4tel');
-      if (e.key === '4') clickId('queast');
-      if (e.key === 's' || e.key === 'S') { e.preventDefault(); Sync.send(); }
-      if (e.key === 'b' || e.key === 'B') { e.preventDefault(); Sync.broadcast(); }
-      if (e.key === 'r' || e.key === 'R') { e.preventDefault(); Sync.reset(); }
-    });
-
-    // PostMessage empfangen
-    window.addEventListener('message', (event) => {
-      const data = event.data;
-      if (data && data.type === CONFIG.syncLabel) {
-        document.getElementById('syncInput').value = data.payload || '';
-        Log.write(`📨 Empfangen von ${data.from || 'unbekannt'}: ${data.payload}`, '🧠 ADAPTIVE');
-        Sync.counter++;
-        document.getElementById('fSyncCount').textContent = Sync.counter;
-      }
-      if (data && data.type === 'etage.ready') {
-        Log.write(`✅ Etage ${data.from} ist bereit`, '🧠 ADAPTIVE');
-      }
-    });
-
-    Log.write('🧠 ADAPTIVE INDEX · modular · geladen', '🧠 ADAPTIVE');
-    Log.write('⌨️  1=CUB  2=STAGE  3=4TEL  4=Generic  s=Sync  b=Broadcast  r=Reset', '🧠 ADAPTIVE');
+    log('🧠 ADAPTIVE INDEX · VITALITY-Kern geladen', '🧠 ADAPTIVE', 'ok');
+    log('⌨️  0=Vitality 1=CUB 2=STAGE 3=4TEL  s=Sync b=Broadcast r=Reset', '🧠 ADAPTIVE');
 
     document.getElementById('ledSystem').className = 'led on';
-    document.getElementById('ledReich').className = 'led pulse';
   }
 
   if (document.readyState === 'complete') init();
